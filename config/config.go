@@ -10,22 +10,25 @@ type Config struct {
 
 var ENV *Config
 
-func LoadConfig() {
+func LoadConfig() (*Config, error) {
 	fang := viper.New()
 
 	fang.AddConfigPath(".")
-	fang.SetConfigName(".env")
+	fang.SetConfigName(".")
 	fang.SetConfigType("env")
 
 	fang.AutomaticEnv()
 
 	err := fang.ReadInConfig()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	err = fang.Unmarshal(&ENV)
 	if err != nil {
-		panic(err)
+		// panic(err)
+		return nil, err
 	}
+
+	return ENV, nil
 }

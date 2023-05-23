@@ -26,6 +26,7 @@ func main() {
 	{
 		v1 := api.Group("v1")
 		{
+			v1.GET("/users/:id", UserController.FindById)
 			v1.POST("/users", UserController.Create)
 		}
 	}

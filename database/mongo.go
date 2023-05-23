@@ -14,10 +14,11 @@ func NewMgoConnection() *mongo.Client {
 	// 	MGO_HOST     = config.ENV.MgoHost
 	// 	MGO_PASSWORD = config.ENV.MgoPassword
 	// )
-	// uri := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.fuxzenu.mongodb.net/?retryWrites=true&w=majority")
+	// uri := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.fuxzenu.mongodb.net/?retryWrites=true&w=majority",
+	// 	MGO_HOST, MGO_PASSWORD)
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().
-		ApplyURI("mongodb+srv://naufalhakim:OOnSx5j0Q0qNeB5o@cluster0.fuxzenu.mongodb.net/?retryWrites=true&w=majority").
+		ApplyURI("mongodb+srv://naufalhakm:SbtX2pBaREWj6Rkg@cluster0.fuxzenu.mongodb.net/?retryWrites=true&w=majority").
 		SetServerAPIOptions(serverAPI)
 
 	// Create a new client and connect to the server
@@ -32,5 +33,5 @@ func NewMgoConnection() *mongo.Client {
 }
 
 func MgoCollection(coll string, client *mongo.Client) *mongo.Collection {
-	return client.Database("intelitalk").Collection(coll)
+	return client.Database("INTELLITALK_ARK").Collection(coll)
 }

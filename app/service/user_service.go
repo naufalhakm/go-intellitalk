@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/naufalhakm/go-intellitalk/app/commons/response"
 	"github.com/naufalhakm/go-intellitalk/app/model"
 	"github.com/naufalhakm/go-intellitalk/app/params"
 	"github.com/naufalhakm/go-intellitalk/app/repository"
@@ -12,7 +13,8 @@ import (
 )
 
 type UserService interface {
-	Create(ctx context.Context, req *params.UserReguest) (string, error)
+	Create(ctx context.Context, req *params.UserReguest) (*params.UserResponse, *response.CustomError)
+	FindById(ctx context.Context, id string) (*params.UserResponse, *response.CustomError)
 }
 
 type UserServiceImpl struct {
@@ -27,11 +29,7 @@ func NewUserService(dbMgo *mongo.Client, userRepository repository.UserRepositor
 	}
 }
 
-func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserReguest) (string, error) {
-	defer service.DBMgo.Disconnect(context.TODO())
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserReguest) (*params.UserResponse, *response.CustomError) {
 
 	var user = model.User{
 		Name:      req.Name,
@@ -42,7 +40,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 
 	result, err := service.UserRepository.Create(ctx, service.DBMgo, &user)
 	if err != nil {
-		return "", err
+		return nil, response.BadRequestError()
 	}
 
 	var IdHex string
@@ -50,5 +48,26 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		IdHex = oid.Hex()
 	}
 
-	return IdHex, nil
+	return &params.UserResponse{
+		ID:    IdHex,
+		Name:  user.Name,
+		Email: user.Email,
+	}, nil
+}
+
+func (service *UserServiceImpl) FindById(ctx context.Context, id string) (*params.UserResponse, *response.CustomError) {
+	var user *model.User
+
+	result, err := service.UserRepository.FindById(ctx, service.DBMgo, user, id)
+
+	if err != nil {
+		return nil, response.NotFoundError()
+	}
+
+	return &params.UserResponse{
+		ID:    result.ID.Hex(),
+		Name:  result.Name,
+		Email: result.Email,
+	}, nil
+
 }
