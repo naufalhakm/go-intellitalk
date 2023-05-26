@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/naufalhakm/go-intellitalk/app/model"
 	"github.com/naufalhakm/go-intellitalk/database"
@@ -13,6 +14,7 @@ import (
 type UserRepository interface {
 	Create(ctx context.Context, dbMgo *mongo.Client, user *model.User) (*mongo.InsertOneResult, error)
 	FindById(ctx context.Context, dbMgo *mongo.Client, user *model.User, id string) (*model.User, error)
+	GetAllUser(ctx context.Context, dbMgo *mongo.Client, users []*model.User) ([]*model.User, error)
 }
 
 type UserRepositoryImpl struct {
@@ -45,4 +47,33 @@ func (repository *UserRepositoryImpl) FindById(ctx context.Context, dbMgo *mongo
 		return nil, err
 	}
 	return user, nil
+}
+
+func (repository *UserRepositoryImpl) GetAllUser(ctx context.Context, dbMgo *mongo.Client, users []*model.User) ([]*model.User, error) {
+	var table = database.MgoCollection("users", dbMgo)
+	cursor, err := table.Find(ctx, bson.D{{}})
+	if err != nil {
+		return nil, err
+	}
+	for cursor.Next(ctx) {
+		var user model.User
+		err := cursor.Decode(&user)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, &user)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+	cursor.Close(ctx)
+
+	if len(users) == 0 {
+		return nil, errors.New("documents not found")
+	}
+
+	return users, nil
+
 }

@@ -6,29 +6,28 @@ type Config struct {
 	MgoHost     string `mapstructure:"MONGO_HOST"`
 	MgoPassword string `mapstructure:"MONGO_PASSWORD"`
 	MgoDatabase string `mapstructure:"MONGO_DATABASE"`
+	PortServer  string `mapstructure:"PORT_SERVER"`
 }
 
 var ENV *Config
 
-func LoadConfig() (*Config, error) {
+func LoadConfig() {
 	fang := viper.New()
 
 	fang.AddConfigPath(".")
-	fang.SetConfigName(".")
+	fang.SetConfigName("app")
 	fang.SetConfigType("env")
 
 	fang.AutomaticEnv()
 
 	err := fang.ReadInConfig()
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	err = fang.Unmarshal(&ENV)
 	if err != nil {
-		// panic(err)
-		return nil, err
+		panic(err)
 	}
 
-	return ENV, nil
 }
