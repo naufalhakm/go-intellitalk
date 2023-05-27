@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM golang:1.19
 
 ENV PROJECT_DIR=/app \
     GO111MODULE=on \
