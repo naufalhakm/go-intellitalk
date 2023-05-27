@@ -15,8 +15,9 @@ func LoadConfig() {
 	fang := viper.New()
 
 	fang.AddConfigPath(".")
-	fang.SetConfigName("app")
+	fang.SetConfigName(".env")
 	fang.SetConfigType("env")
+	// fang.AutomaticEnv()
 
 	fang.AutomaticEnv()
 
