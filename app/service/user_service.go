@@ -47,14 +47,14 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		UpdatedAt: time.Now(),
 	}
 
-	session, errSess := service.DBMgo.StartSession()
-	if errSess != nil {
-		return nil, response.GeneralError()
-	}
+	// session, errSess := service.DBMgo.StartSession()
+	// if errSess != nil {
+	// 	return nil, response.GeneralError()
+	// }
 
-	if errSess = session.StartTransaction(); errSess != nil {
-		return nil, response.GeneralError()
-	}
+	// if errSess = session.StartTransaction(); errSess != nil {
+	// 	return nil, response.GeneralError()
+	// }
 
 	result, err := service.UserRepository.Create(ctx, service.DBMgo, &user)
 	if err != nil {
@@ -67,9 +67,13 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 	}
 
 	return &params.UserResponse{
-		ID:    IdHex,
-		Name:  user.Name,
-		Email: user.Email,
+		ID:        IdHex,
+		Name:      user.Name,
+		Email:     user.Email,
+		Division:  user.Division,
+		Position:  user.Position,
+		Parameter: user.Parameter,
+		Link:      "https://www.intellitalk.com/" + IdHex,
 	}, nil
 }
 
