@@ -22,7 +22,7 @@ func main() {
 	UserController := controller.NewAuthContoller(UserService)
 	router := gin.New()
 
-	router.Use(gin.Logger())
+	router.Use(gin.Logger(), CORS())
 
 	api := router.Group("/api")
 	{
@@ -38,6 +38,16 @@ func main() {
 
 	router.Run(":" + config.ENV.PortServer)
 }
+
+func CORS() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.Header("Access-Control-Allow-Origin", "*")
+		ctx.Header("Access-Control-Request-Methods", "GET, OPTIONS, POST, PUT, DELETE")
+		ctx.Header("Access-Control-Request-Headers", "Authorization, Content-Type")
+		ctx.Next()
+	}
+}
+
 func Ping(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, map[string]interface{}{
 		"message": "OK",
