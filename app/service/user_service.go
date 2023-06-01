@@ -42,7 +42,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		Email:     req.Email,
 		Division:  req.Division,
 		Position:  req.Position,
-		Parameter: req.Parameter,
+		Skill:     req.Skill,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -67,13 +67,13 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 	}
 
 	return &params.UserResponse{
-		ID:        IdHex,
-		Name:      user.Name,
-		Email:     user.Email,
-		Division:  user.Division,
-		Position:  user.Position,
-		Parameter: user.Parameter,
-		Link:      "http://localhost:3000/intellitalk/guest/" + IdHex,
+		ID:       IdHex,
+		Name:     user.Name,
+		Email:    user.Email,
+		Division: user.Division,
+		Position: user.Position,
+		Skill:    user.Skill,
+		Link:     "http://localhost:3000/intellitalk/guest/" + IdHex,
 	}, nil
 }
 
@@ -97,13 +97,13 @@ func (service *UserServiceImpl) FindById(ctx context.Context, id string) (*param
 	// }
 
 	return &params.UserResponse{
-		ID:        result.ID.Hex(),
-		Name:      result.Name,
-		Email:     result.Email,
-		Division:  result.Division,
-		Position:  result.Position,
-		Parameter: result.Parameter,
-		Link:      "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
+		ID:       result.ID.Hex(),
+		Name:     result.Name,
+		Email:    result.Email,
+		Division: result.Division,
+		Position: result.Position,
+		Skill:    result.Skill,
+		Link:     "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
 	}, nil
 
 }
@@ -119,13 +119,13 @@ func (service *UserServiceImpl) GetAllCandidate(ctx context.Context) ([]*params.
 	var responses []*params.UserCandidateResponse
 	for _, result := range results {
 		response := params.UserCandidateResponse{
-			ID:        result.ID.Hex(),
-			Name:      result.Name,
-			Email:     result.Email,
-			Division:  result.Division,
-			Position:  result.Position,
-			Parameter: result.Parameter,
-			Link:      "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
+			ID:       result.ID.Hex(),
+			Name:     result.Name,
+			Email:    result.Email,
+			Division: result.Division,
+			Position: result.Position,
+			Skill:    result.Skill,
+			Link:     "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
 		}
 		responses = append(responses, &response)
 	}
