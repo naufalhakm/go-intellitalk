@@ -48,6 +48,11 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		UpdatedAt: time.Now(),
 	}
 
+	_, errEmail := service.UserRepository.FindByEmail(ctx, service.DBMgo, &user, user.Email)
+	if errEmail == nil {
+		return nil, response.RepositoryErrorWithAdditionalInfo("Email has been used, replace with another email.")
+	}
+
 	// session, errSess := service.DBMgo.StartSession()
 	// if errSess != nil {
 	// 	return nil, response.GeneralError()

@@ -14,6 +14,7 @@ import (
 type UserRepository interface {
 	Create(ctx context.Context, dbMgo *mongo.Client, user *model.User) (*mongo.InsertOneResult, error)
 	FindById(ctx context.Context, dbMgo *mongo.Client, user *model.User, id string) (*model.User, error)
+	FindByEmail(ctx context.Context, dbMgo *mongo.Client, user *model.User, email string) (*model.User, error)
 	GetAllUser(ctx context.Context, dbMgo *mongo.Client, users []*model.User) ([]*model.User, error)
 }
 
@@ -43,6 +44,16 @@ func (repository *UserRepositoryImpl) FindById(ctx context.Context, dbMgo *mongo
 	}
 
 	err = table.FindOne(ctx, bson.M{"_id": objectId}).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (repository *UserRepositoryImpl) FindByEmail(ctx context.Context, dbMgo *mongo.Client, user *model.User, email string) (*model.User, error) {
+	var table = database.MgoCollection("users", dbMgo)
+
+	err := table.FindOne(ctx, bson.M{"email": email}).Decode(&user)
 	if err != nil {
 		return nil, err
 	}
