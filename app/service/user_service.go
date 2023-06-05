@@ -43,6 +43,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		Division:  req.Division,
 		Position:  req.Position,
 		Skill:     req.Skill,
+		Quantity:  req.Quantity,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -73,6 +74,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		Division: user.Division,
 		Position: user.Position,
 		Skill:    user.Skill,
+		Quantity: user.Quantity,
 		Link:     "http://localhost:3000/intellitalk/guest/" + IdHex,
 	}, nil
 }
@@ -103,6 +105,7 @@ func (service *UserServiceImpl) FindById(ctx context.Context, id string) (*param
 		Division: result.Division,
 		Position: result.Position,
 		Skill:    result.Skill,
+		Quantity: result.Quantity,
 		Link:     "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
 	}, nil
 
@@ -125,6 +128,7 @@ func (service *UserServiceImpl) GetAllCandidate(ctx context.Context) ([]*params.
 			Division: result.Division,
 			Position: result.Position,
 			Skill:    result.Skill,
+			Quantity: result.Quantity,
 			Link:     "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
 		}
 		responses = append(responses, &response)

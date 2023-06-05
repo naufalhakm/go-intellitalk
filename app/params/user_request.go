@@ -6,4 +6,5 @@ type UserReguest struct {
 	Division string `json:"division" validate:"required"`
 	Position string `json:"position" validate:"required"`
 	Skill    string `json:"skill" validate:"required"`
+	Quantity int    `json:"quantity" validate:"required"`
 }

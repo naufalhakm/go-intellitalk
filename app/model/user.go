@@ -13,6 +13,7 @@ type User struct {
 	Division  string             `bson:"division" json:"division"`
 	Position  string             `bson:"position" json:"position"`
 	Skill     string             `bson:"skill" json:"skill"`
+	Quantity  int                `bson:"quantity" json:"quantity"`
 	CreatedAt time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at" json:"updated_at"`
 }

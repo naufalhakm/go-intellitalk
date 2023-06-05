@@ -7,6 +7,7 @@ type UserResponse struct {
 	Division string `json:"division"`
 	Position string `json:"position"`
 	Skill    string `json:"skill"`
+	Quantity int    `json:"quantity"`
 	Link     string `json:"link"`
 }
 
@@ -17,5 +18,6 @@ type UserCandidateResponse struct {
 	Division string `json:"division"`
 	Position string `json:"position"`
 	Skill    string `json:"skill"`
+	Quantity int    `json:"quantity"`
 	Link     string `json:"link"`
 }
