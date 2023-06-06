@@ -17,17 +17,20 @@ type UserService interface {
 	Create(ctx context.Context, req *params.UserReguest) (*params.UserResponse, *response.CustomError)
 	FindById(ctx context.Context, id string) (*params.UserResponse, *response.CustomError)
 	GetAllCandidate(ctx context.Context) ([]*params.UserCandidateResponse, *response.CustomError)
+	GetAllUserConversation(ctx context.Context) ([]*params.UserConversationResponse, *response.CustomError)
 }
 
 type UserServiceImpl struct {
-	DBMgo          *mongo.Client
-	UserRepository repository.UserRepository
+	DBMgo                  *mongo.Client
+	UserRepository         repository.UserRepository
+	ConversationRepository repository.ConversationRepository
 }
 
-func NewUserService(dbMgo *mongo.Client, userRepository repository.UserRepository) UserService {
+func NewUserService(dbMgo *mongo.Client, userRepository repository.UserRepository, conversationRepository repository.ConversationRepository) UserService {
 	return &UserServiceImpl{
-		DBMgo:          dbMgo,
-		UserRepository: userRepository,
+		DBMgo:                  dbMgo,
+		UserRepository:         userRepository,
+		ConversationRepository: conversationRepository,
 	}
 }
 
@@ -137,6 +140,41 @@ func (service *UserServiceImpl) GetAllCandidate(ctx context.Context) ([]*params.
 			Link:     "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
 		}
 		responses = append(responses, &response)
+	}
+
+	return responses, nil
+}
+
+func (service *UserServiceImpl) GetAllUserConversation(ctx context.Context) ([]*params.UserConversationResponse, *response.CustomError) {
+	var users []*model.User
+
+	results, err := service.UserRepository.GetAllUser(ctx, service.DBMgo, users)
+	if err != nil {
+		return nil, response.NotFoundError()
+	}
+
+	var responses []*params.UserConversationResponse
+	for _, result := range results {
+		var conversation *model.Conversation
+
+		_, errCon := service.ConversationRepository.FindByUserId(ctx, service.DBMgo, conversation, result.ID.Hex())
+
+		if errCon == nil {
+
+			response := params.UserConversationResponse{
+				ID:        result.ID.Hex(),
+				Name:      result.Name,
+				Email:     result.Email,
+				Division:  result.Division,
+				Position:  result.Position,
+				Skill:     result.Skill,
+				Quantity:  result.Quantity,
+				LinkVideo: "https://drive.google.com/drive/intellitalk/guest/" + result.ID.Hex(),
+			}
+			responses = append(responses, &response)
+
+		}
+
 	}
 
 	return responses, nil

@@ -13,6 +13,7 @@ type AuthController interface {
 	Create(ctx *gin.Context)
 	FindById(ctx *gin.Context)
 	GetAllCandidate(ctx *gin.Context)
+	GetAllUserConversation(ctx *gin.Context)
 }
 
 type AuthControllerImpl struct {
@@ -66,5 +67,15 @@ func (controller *AuthControllerImpl) GetAllCandidate(ctx *gin.Context) {
 		return
 	}
 	resp := response.GeneralSuccessCustomMessageAndPayload("Success get all data user candidate!", result)
+	ctx.JSON(resp.StatusCode, resp)
+}
+
+func (controller *AuthControllerImpl) GetAllUserConversation(ctx *gin.Context) {
+	result, err := controller.UserService.GetAllUserConversation(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(err.StatusCode, err)
+		return
+	}
+	resp := response.GeneralSuccessCustomMessageAndPayload("Success get all data user candidate conversation!", result)
 	ctx.JSON(resp.StatusCode, resp)
 }

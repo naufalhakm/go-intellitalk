@@ -15,6 +15,7 @@ type ConversationRepository interface {
 	CreateConversation(ctx context.Context, dbMgo *mongo.Client, conversation *model.Conversation) (*mongo.InsertOneResult, error)
 	FindById(ctx context.Context, dbMgo *mongo.Client, conversation *model.Conversation, id string) (*model.Conversation, error)
 	GetAllConversation(ctx context.Context, dbMgo *mongo.Client, conversations []*model.Conversation) ([]*model.Conversation, error)
+	FindByUserId(ctx context.Context, dbMgo *mongo.Client, conversation *model.Conversation, userDd string) (*model.Conversation, error)
 }
 
 type ConversationRepositoryImpl struct {
@@ -76,4 +77,14 @@ func (repository *ConversationRepositoryImpl) GetAllConversation(ctx context.Con
 
 	return conversations, nil
 
+}
+
+func (repository *ConversationRepositoryImpl) FindByUserId(ctx context.Context, dbMgo *mongo.Client, conversation *model.Conversation, userId string) (*model.Conversation, error) {
+	var table = database.MgoCollection("conversations", dbMgo)
+
+	err := table.FindOne(ctx, bson.M{"user_id": userId}).Decode(&conversation)
+	if err != nil {
+		return nil, err
+	}
+	return conversation, nil
 }

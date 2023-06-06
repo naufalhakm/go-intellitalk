@@ -18,10 +18,11 @@ func main() {
 	defer client.Disconnect(context.TODO())
 
 	UserRepository := repository.NewUserRepository()
-	UserService := service.NewUserService(client, UserRepository)
+	ConversationRepository := repository.NewConversationRepository()
+
+	UserService := service.NewUserService(client, UserRepository, ConversationRepository)
 	UserController := controller.NewAuthContoller(UserService)
 
-	ConversationRepository := repository.NewConversationRepository()
 	ConversationService := service.NewConversationService(client, ConversationRepository)
 	ConversationController := controller.NewoConversationContoller(ConversationService)
 
@@ -39,6 +40,7 @@ func main() {
 			v1.GET("/conversations", ConversationController.GetAllConversation)
 			v1.GET("/conversations/:id", ConversationController.FindById)
 			v1.POST("/conversations", ConversationController.Create)
+			v1.GET("/users/conversations", UserController.GetAllUserConversation)
 		}
 	}
 
