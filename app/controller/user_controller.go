@@ -48,9 +48,9 @@ func (controller *AuthControllerImpl) Create(ctx *gin.Context) {
 }
 
 func (controller *AuthControllerImpl) FindById(ctx *gin.Context) {
-	var email string = ctx.Param("id")
+	var id string = ctx.Param("id")
 
-	result, err := controller.UserService.FindById(ctx, email)
+	result, err := controller.UserService.FindById(ctx, id)
 	if err != nil {
 		ctx.AbortWithStatusJSON(err.StatusCode, err)
 		return

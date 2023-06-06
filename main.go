@@ -20,6 +20,11 @@ func main() {
 	UserRepository := repository.NewUserRepository()
 	UserService := service.NewUserService(client, UserRepository)
 	UserController := controller.NewAuthContoller(UserService)
+
+	ConversationRepository := repository.NewConversationRepository()
+	ConversationService := service.NewConversationService(client, ConversationRepository)
+	ConversationController := controller.NewoConversationContoller(ConversationService)
+
 	router := gin.New()
 
 	router.Use(gin.Logger(), CORS())
@@ -31,6 +36,9 @@ func main() {
 			v1.GET("/users", UserController.GetAllCandidate)
 			v1.GET("/users/:id", UserController.FindById)
 			v1.POST("/users", UserController.Create)
+			v1.GET("/conversations", ConversationController.GetAllConversation)
+			v1.GET("/conversations/:id", ConversationController.FindById)
+			v1.POST("/conversations", ConversationController.Create)
 		}
 	}
 
