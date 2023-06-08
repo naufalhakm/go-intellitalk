@@ -9,6 +9,7 @@ type UserResponse struct {
 	Skill    string `json:"skill"`
 	Quantity int    `json:"quantity"`
 	Link     string `json:"link"`
+	Status   int    `json:"status"`
 }
 
 type UserCandidateResponse struct {

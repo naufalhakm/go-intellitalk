@@ -23,7 +23,7 @@ func main() {
 	UserService := service.NewUserService(client, UserRepository, ConversationRepository)
 	UserController := controller.NewAuthContoller(UserService)
 
-	ConversationService := service.NewConversationService(client, ConversationRepository)
+	ConversationService := service.NewConversationService(client, ConversationRepository, UserRepository)
 	ConversationController := controller.NewoConversationContoller(ConversationService)
 
 	router := gin.New()

@@ -16,6 +16,7 @@ type UserRepository interface {
 	FindById(ctx context.Context, dbMgo *mongo.Client, user *model.User, id string) (*model.User, error)
 	FindByEmail(ctx context.Context, dbMgo *mongo.Client, user *model.User, email string) (*model.User, error)
 	GetAllUser(ctx context.Context, dbMgo *mongo.Client, users []*model.User) ([]*model.User, error)
+	UpdateUserStatus(ctx context.Context, dbMgo *mongo.Client, id string) (*mongo.UpdateResult, error)
 }
 
 type UserRepositoryImpl struct {
@@ -87,4 +88,22 @@ func (repository *UserRepositoryImpl) GetAllUser(ctx context.Context, dbMgo *mon
 
 	return users, nil
 
+}
+func (repository *UserRepositoryImpl) UpdateUserStatus(ctx context.Context, dbMgo *mongo.Client, id string) (*mongo.UpdateResult, error) {
+	var table = database.MgoCollection("users", dbMgo)
+
+	objectId, errId := primitive.ObjectIDFromHex(id)
+	if errId != nil {
+		return nil, errId
+	}
+
+	result, err := table.UpdateOne(
+		ctx,
+		bson.M{"_id": objectId},
+		bson.D{{"$set", bson.D{{"status", 1}}}})
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

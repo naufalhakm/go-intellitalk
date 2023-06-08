@@ -22,12 +22,14 @@ type ConversationService interface {
 type ConversationServiceImpl struct {
 	DBMgo                  *mongo.Client
 	ConversationRepository repository.ConversationRepository
+	UserRepository         repository.UserRepository
 }
 
-func NewConversationService(dbMgo *mongo.Client, conversationRepository repository.ConversationRepository) ConversationService {
+func NewConversationService(dbMgo *mongo.Client, conversationRepository repository.ConversationRepository, userRepository repository.UserRepository) ConversationService {
 	return &ConversationServiceImpl{
 		DBMgo:                  dbMgo,
 		ConversationRepository: conversationRepository,
+		UserRepository:         userRepository,
 	}
 }
 
@@ -46,6 +48,11 @@ func (service *ConversationServiceImpl) Create(ctx context.Context, req *params.
 
 	result, err := service.ConversationRepository.CreateConversation(ctx, service.DBMgo, &conversation)
 	if err != nil {
+		return nil, response.BadRequestError()
+	}
+
+	_, errUp := service.UserRepository.UpdateUserStatus(ctx, service.DBMgo, *conversation.UserId)
+	if errUp != nil {
 		return nil, response.BadRequestError()
 	}
 

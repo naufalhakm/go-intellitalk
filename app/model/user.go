@@ -14,6 +14,7 @@ type User struct {
 	Position  string             `bson:"position" json:"position"`
 	Skill     string             `bson:"skill" json:"skill"`
 	Quantity  int                `bson:"quantity" json:"quantity"`
+	Status    int                `bson:"status" json:"status"`
 	CreatedAt time.Time          `bson:"created_at" json:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at" json:"updated_at"`
 }

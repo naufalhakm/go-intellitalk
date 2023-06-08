@@ -47,6 +47,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		Position:  req.Position,
 		Skill:     req.Skill,
 		Quantity:  req.Quantity,
+		Status:    0,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -83,6 +84,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		Position: user.Position,
 		Skill:    user.Skill,
 		Quantity: user.Quantity,
+		Status:   user.Status,
 		Link:     "http://localhost:3000/intellitalk/guest/" + IdHex,
 	}, nil
 }
@@ -115,6 +117,7 @@ func (service *UserServiceImpl) FindById(ctx context.Context, id string) (*param
 		Skill:    result.Skill,
 		Quantity: result.Quantity,
 		Link:     "http://localhost:3000/intellitalk/guest/" + result.ID.Hex(),
+		Status:   result.Status,
 	}, nil
 
 }
