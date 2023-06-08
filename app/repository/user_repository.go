@@ -100,7 +100,7 @@ func (repository *UserRepositoryImpl) UpdateUserStatus(ctx context.Context, dbMg
 	result, err := table.UpdateOne(
 		ctx,
 		bson.M{"_id": objectId},
-		bson.D{{"$set", bson.D{{"status", 1}}}})
+		bson.D{{Key: "$set", Value: bson.D{{Key: "status", Value: 1}}}})
 	if err != nil {
 		return nil, err
 	}
