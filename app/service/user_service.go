@@ -160,19 +160,19 @@ func (service *UserServiceImpl) GetAllUserConversation(ctx context.Context) ([]*
 	for _, result := range results {
 		var conversation *model.Conversation
 
-		_, errCon := service.ConversationRepository.FindByUserId(ctx, service.DBMgo, conversation, result.ID.Hex())
+		resultCon, errCon := service.ConversationRepository.FindByUserId(ctx, service.DBMgo, conversation, result.ID.Hex())
 
 		if errCon == nil {
 
 			response := params.UserConversationResponse{
-				ID:        result.ID.Hex(),
-				Name:      result.Name,
-				Email:     result.Email,
-				Division:  result.Division,
-				Position:  result.Position,
-				Skill:     result.Skill,
-				Quantity:  result.Quantity,
-				LinkVideo: "https://drive.google.com/drive/intellitalk/guest/" + result.ID.Hex(),
+				ID:       resultCon.ID.Hex(),
+				Name:     result.Name,
+				Email:    result.Email,
+				Division: result.Division,
+				Position: result.Position,
+				Skill:    result.Skill,
+				Quantity: result.Quantity,
+				// LinkVideo: "https://drive.google.com/drive/intellitalk/guest/" + result.ID.Hex(),
 			}
 			responses = append(responses, &response)
 
