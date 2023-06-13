@@ -132,17 +132,19 @@ func (service *UserServiceImpl) GetAllCandidate(ctx context.Context) ([]*params.
 
 	var responses []*params.UserCandidateResponse
 	for _, result := range results {
-		response := params.UserCandidateResponse{
-			ID:       result.ID.Hex(),
-			Name:     result.Name,
-			Email:    result.Email,
-			Division: result.Division,
-			Position: result.Position,
-			Skill:    result.Skill,
-			Quantity: result.Quantity,
-			Link:     "https://arkademi-intellitalk.vercel.app/#/preparation/" + result.ID.Hex(),
+		if result.Status == 0 {
+			response := params.UserCandidateResponse{
+				ID:       result.ID.Hex(),
+				Name:     result.Name,
+				Email:    result.Email,
+				Division: result.Division,
+				Position: result.Position,
+				Skill:    result.Skill,
+				Quantity: result.Quantity,
+				Link:     "https://arkademi-intellitalk.vercel.app/#/preparation/" + result.ID.Hex(),
+			}
+			responses = append(responses, &response)
 		}
-		responses = append(responses, &response)
 	}
 
 	return responses, nil
