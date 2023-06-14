@@ -85,7 +85,7 @@ func (service *UserServiceImpl) Create(ctx context.Context, req *params.UserRegu
 		Skill:    user.Skill,
 		Quantity: user.Quantity,
 		Status:   user.Status,
-		Link:     "https://arkademi-intellitalk.vercel.app/#/prepatation/" + IdHex,
+		Link:     "https://arkademi-intellitalk.vercel.app/#/conversations/" + IdHex,
 	}, nil
 }
 
@@ -116,7 +116,7 @@ func (service *UserServiceImpl) FindById(ctx context.Context, id string) (*param
 		Position: result.Position,
 		Skill:    result.Skill,
 		Quantity: result.Quantity,
-		Link:     "https://arkademi-intellitalk.vercel.app/#/prepatation/" + result.ID.Hex(),
+		Link:     "https://arkademi-intellitalk.vercel.app/#/conversations/" + result.ID.Hex(),
 		Status:   result.Status,
 	}, nil
 
@@ -141,7 +141,7 @@ func (service *UserServiceImpl) GetAllCandidate(ctx context.Context) ([]*params.
 				Position: result.Position,
 				Skill:    result.Skill,
 				Quantity: result.Quantity,
-				Link:     "https://arkademi-intellitalk.vercel.app/#/preparation/" + result.ID.Hex(),
+				Link:     "https://arkademi-intellitalk.vercel.app/#/conversations/" + result.ID.Hex(),
 			}
 			responses = append(responses, &response)
 		}
