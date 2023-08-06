@@ -147,6 +147,10 @@ func (service *UserServiceImpl) GetAllCandidate(ctx context.Context) ([]*params.
 		}
 	}
 
+	if responses == nil {
+		responses = []*params.UserCandidateResponse{}
+	}
+
 	return responses, nil
 }
 
